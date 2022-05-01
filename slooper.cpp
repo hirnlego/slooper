@@ -1,0 +1,44 @@
+#include "slooper.h"
+#include "ui.h"
+#include <cstring>
+
+using namespace slooper;
+
+void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
+{
+    ProcessControls();
+    ProcessUi();
+
+    for (size_t i = 0; i < size; i++)
+    {
+        float leftIn{IN_L[i]};
+        float rightIn{IN_R[i]};
+
+        float leftOut{};
+        float rightOut{};
+        looper.Process(leftIn, rightIn, leftOut, rightOut);
+
+        OUT_L[i] = leftOut;
+        OUT_R[i] = rightOut;
+    }
+}
+
+int main(void)
+{
+    InitHw();
+
+    StereoLooper::Conf conf
+    {
+        StereoLooper::Mode::MONO,
+        Movement::NORMAL,
+        Direction::FORWARD,
+        rate: 1.0f
+    };
+
+    looper.Init(GetAudioSampleRate(), conf);
+
+    StartAudio(AudioCallback);
+    StartAdc();
+
+    while (true) {}
+}
