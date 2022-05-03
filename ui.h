@@ -206,7 +206,7 @@ namespace slooper
                 ProcessParameter(KNOB_BLEND, values[KNOB_BLEND]);
                 looper.inputGain = 1.f;
                 looper.filterType = StereoLooper::FilterType::BP;
-                looper.filterLevel = 0.7f;
+                looper.filterLevel = 0.75f;
                 looper.rateSlew = 0.f;
                 looper.SetLoopSync(false);
                 looper.SetDegradation(0.25f);
