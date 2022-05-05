@@ -64,18 +64,22 @@ namespace slooper
         case KNOB_START_L:
         case KNOB_START_R:
             {
-                /*
-                if (KNOB_START_L == idx)
+                if (looper.crossedFeedback)
                 {
-                    looper.leftFeedbackPath = value;
+                    if (KNOB_START_L == idx)
+                    {
+                        looper.leftFeedbackPath = value;
+                    }
+                    else
+                    {
+                        looper.rightFeedbackPath = value;
+                    }
                 }
                 else
                 {
-                    looper.rightFeedbackPath = value;
+                    Channel channel = KNOB_START_L == idx ? Channel::LEFT : Channel::RIGHT;
+                    looper.SetLoopStart(channel, Map(value, 0.f, 1.f, 0.f, looper.GetBufferSamples(channel) - 1));
                 }
-                */
-                Channel channel = KNOB_START_L == idx ? Channel::LEFT : Channel::RIGHT;
-                looper.SetLoopStart(channel, Map(value, 0.f, 1.f, 0.f, looper.GetBufferSamples(channel) - 1));
             }
             break;
         case KNOB_LENGTH_L:
@@ -219,11 +223,11 @@ namespace slooper
                 looper.filterType = StereoLooper::FilterType::BP;
                 looper.filterLevel = 0.75f;
                 looper.rateSlew = 0.f;
-                looper.crossedFeedback = true;
+                looper.crossedFeedback = false;
                 looper.leftFeedbackPath = 0.f;
                 looper.rightFeedbackPath = 1.f;
                 looper.SetLoopSync(Channel::LEFT, false);
-                looper.SetLoopSync(Channel::RIGHT, true);
+                looper.SetLoopSync(Channel::RIGHT, false);
                 looper.SetDegradation(0.25f);
             }
 
